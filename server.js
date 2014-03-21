@@ -21,4 +21,12 @@ var express = require('express')
 
 	io.sockets.on('connection',function(socket){
 		console.log('Someone Connected');
+		socket.on('join',function(name){
+			socket.nickname=name;
+			socket.broadcast.emit('announcement',name + 'joined the chat');
+		});
+
+		socket.on('text',function(msg){
+			socket.broadcast.emit('text',socket.nickname,msg);
+		});
 	});
