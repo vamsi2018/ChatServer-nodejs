@@ -1,5 +1,5 @@
 window.onload = function(){
-	var socket = io.connect();
+	socket = io.connect();
 	socket.on('connect',function(){
 		// Send a join event with your name
 		socket.emit('join',prompt('What is your nickname'));
@@ -11,6 +11,13 @@ window.onload = function(){
 			li.className='announcement';
 			li.innerHTML= msg;
 			document.getElementById('messages').appendChild(li);
+		});
+		socket.on('userDisconnect',function(name){
+			var li = document.createElement('li');
+			li.className='userDisconnected';
+			li.innerHTML= name + ' disconnected!!!';
+			document.getElementById('messages').appendChild(li);
+		
 		});
 	});
 
@@ -34,4 +41,20 @@ window.onload = function(){
 	}
 
 	socket.on('text',addMessage);
+
+	socket.on('requestedRoster',function(activeConnectionNames){
+		var rosterDiv = document.getElementById('rosterDiv');
+		rosterDiv.innerHTML = "";
+		for(var index=0;index<activeConnectionNames.length;index++){
+			var connDiv = document.createElement('div');
+			connDiv.id = activeConnectionNames[index]+'Conn';
+			connDiv.innerText = activeConnectionNames[index];
+			rosterDiv.appendChild(connDiv);
+		}
+	});
+
+}
+
+function getRoster(){
+	socket.emit('getRoster',"");
 }
