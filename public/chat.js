@@ -1,10 +1,12 @@
 window.onload = function(){
 	socket = io.connect();
 	socket.on('connect',function(){
+
 		// Send a join event with your name
 		var nickname =prompt('What is your nickname') ;
-		socket.nickname = nickname;
+		socket.nickname = nickname.replace(/\ /g,'-');
 		socket.emit('join',socket.nickname);
+		
 		// show the chat
 		document.getElementById('chat').style.display = 'block';
 
@@ -14,6 +16,7 @@ window.onload = function(){
 			li.innerHTML= msg;
 			document.getElementById('messages').appendChild(li);
 		});
+		
 		socket.on('userDisconnect',function(name){
 			var li = document.createElement('li');
 			li.className='userDisconnected';
@@ -25,6 +28,10 @@ window.onload = function(){
 			console.log("Removing "+name+"Conn");
 			rosterDiv.removeChild(disconnectedUserDiv);
 		});
+
+		socket.on('alreadyRegistered',function(){
+			document.body.innerHTML = 'You are already connected with this IP';
+		})
 	});
 
 	function addMessage(from,text){

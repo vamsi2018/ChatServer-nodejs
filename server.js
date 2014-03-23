@@ -22,15 +22,24 @@ var express = require('express')
 	//var participatingSockets = [];
 	var participatingSockets = {};
 
+/*Mode 
+ * */
+	var IS_DEV=true;
+
 	io.sockets.on('connection',function(socket){
-		console.log('Someone Connected');
+		console.log("Client connecting to server from " + socket.handshake.address.address);
 		socket.on('join',function(name){
 			socket.nickname=name;
-			socket.broadcast.emit('announcement',name + 'joined the chat');
-			//participatingSockets.push(socket);
-			participatingSockets[socket.nickname]=socket;
-			// Allow all the users to know about the online users
-			io.sockets.emit('requestedRoster',roster());
+			if(!isThisClientIpRegistered(socket)||IS_DEV){
+				socket.broadcast.emit('announcement',name + 'joined the chat');
+				socket.ip =socket.handshake.address.address ;
+				//participatingSockets.push(socket);
+				participatingSockets[socket.nickname]=socket;
+				// Allow all the users to know about the online users
+				io.sockets.emit('requestedRoster',roster());
+			}else{
+				socket.emit('alreadyRegistered',{});	
+			}
 		});
 
 		socket.on('text',function(msg){
@@ -68,4 +77,14 @@ var express = require('express')
 	function getSocket(nickName){
 		return participatingSockets[nickName];
 		
+	}
+
+
+	function isThisClientIpRegistered(newSocket){
+		for(name in participatingSockets){
+			if(participatingSockets[name].handshake.address.address === newSocket.handshake.address.address){
+				return true;
+			}
+		}
+		return false;
 	}
