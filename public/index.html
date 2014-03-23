@@ -2,18 +2,31 @@
 <html>
 	<head>
 		<title> Chat </title>
+		<link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/cupertino/jquery-ui.css'>
+		    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js'></script>
+				    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js'></script>
 		<script src="/socket.io/socket.io.js" > </script>
 		<script src = "./chat.js" > </script>
+		<script>
+			$(function() {
+				$( "#chat" ).tabs();
+			});
+		</script>
 	</head>
 	<body>
 		<button onclick='getRoster()'>Get Roster</button>
 		<div id="rosterDiv"></div>
 		<div id="chat">
-			<ul id="messages"></ul>
-			<form id="form">
-				<input type="text" id="input"/>
-				<button>Send</button>
-			</form>
+			<ul>
+				<li><a href="#GroupChat">GroupChat</a></li>
+			</ul>
+			<div id='GroupChat'>
+				<ul id="messages"></ul>
+				<form id="form">
+					<input type="text" id="input"/>
+					<button>Send</button>
+				</form>
+		</div>
 		</div>
 	</body>
 </html>
