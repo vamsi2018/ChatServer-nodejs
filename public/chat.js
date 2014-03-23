@@ -17,7 +17,10 @@ window.onload = function(){
 			li.className='userDisconnected';
 			li.innerHTML= name + ' disconnected!!!';
 			document.getElementById('messages').appendChild(li);
-		
+			
+			var rosterDiv = document.getElementById('rosterDiv');
+			var disconnectedUserDiv = document.getElementById(name+'Conn');
+			rosterDiv.removeChild(disconnectedUserDiv);
 		});
 	});
 
@@ -48,7 +51,10 @@ window.onload = function(){
 		for(var index=0;index<activeConnectionNames.length;index++){
 			var connDiv = document.createElement('div');
 			connDiv.id = activeConnectionNames[index]+'Conn';
-			connDiv.innerText = activeConnectionNames[index];
+
+			var label = document.createElement('label');
+			label.textContent =activeConnectionNames[index];
+ 			connDiv.appendChild(label);
 			rosterDiv.appendChild(connDiv);
 		}
 	});

@@ -27,7 +27,8 @@ var express = require('express')
 			socket.nickname=name;
 			socket.broadcast.emit('announcement',name + 'joined the chat');
 			participatingSockets.push(socket);
-			socket.broadcast.emit('requestedRoster',roster());
+			// Allow all the users to know about the online users
+			io.sockets.emit('requestedRoster',roster());
 		});
 
 		socket.on('text',function(msg){
@@ -48,5 +49,6 @@ var express = require('express')
 			var disconnectedSocketIndex = participatingSockets.indexOf(socket);
 			participatingSockets.splice(disconnectedSocketIndex,1);
 		});
-			socket.broadcast.emit('requestedRoster',roster());
+			// Allow all the users to know about the online users
+			io.sockets.emit('requestedRoster',roster());
 	});
