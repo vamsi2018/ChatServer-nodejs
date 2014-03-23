@@ -5,6 +5,7 @@ window.onload = function(){
 		var nickname =prompt('What is your nickname') ;
 		socket.nickname = nickname;
 		socket.emit('join',socket.nickname);
+		 document.getElementById('input').focus();
 		// show the chat
 		document.getElementById('chat').style.display = 'block';
 
@@ -30,7 +31,14 @@ window.onload = function(){
 	function addMessage(from,text){
 		var li = document.createElement('li');
 		li.className = 'message';
-		li.innerHTML = '<b>' + from + '</b> : ' + text;
+		if(from == "me"){
+			li.style.float='left';
+			li.innerHTML = '<b>' + from + '</b> : ' + text+'<br>';
+		}
+		else{
+			li.style.float='right';
+			li.innerHTML = text+ ': <b>' + from + '</b><br>';
+		}
 		document.getElementById('messages').appendChild(li);
 	}
 
@@ -90,11 +98,18 @@ function initiateChatWith(name){
 		chatDiv.setAttribute('data-to',name);
 		var form = document.createElement('form');
 		form.id = chatDiv.id + '-form';
+		var footerDiv = document.createElement('div');
+		footerDiv.id='footer';
 		var input = document.createElement('input');
 		input.id = chatDiv.id + '-input';
 		input.type='text';
 		input.class = 'textInput';
-		form.appendChild(input);
+		input.style.width='75%';
+		var sendButton = document.createElement('button');
+		sendButton.innerText='Send';
+		footerDiv.appendChild(input);
+		footerDiv.appendChild(sendButton);
+		form.appendChild(footerDiv);
 		form.onsubmit = function(){
 			formSubmit(chatDiv.id);
 			return false;

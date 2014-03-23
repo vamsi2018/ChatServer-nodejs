@@ -26,7 +26,7 @@ var express = require('express')
 		console.log('Someone Connected');
 		socket.on('join',function(name){
 			socket.nickname=name;
-			socket.broadcast.emit('announcement',name + 'joined the chat');
+			socket.broadcast.emit('announcement',name + ' joined the chat');
 			//participatingSockets.push(socket);
 			participatingSockets[socket.nickname]=socket;
 			// Allow all the users to know about the online users

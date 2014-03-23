@@ -7,6 +7,7 @@
 				    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js'></script>
 		<script src="/socket.io/socket.io.js" > </script>
 		<script src = "./chat.js" > </script>
+		<link rel="stylesheet" type="text/css" href="chat.css">
 		<script>
 			$(function() {
 				$( "#chat" ).tabs();
@@ -14,19 +15,20 @@
 		</script>
 	</head>
 	<body>
-		<button onclick='getRoster()'>Get Roster</button>
-		<div id="rosterDiv"></div>
-		<div id="chat">
-			<ul>
+			<section>
+			<div id="chat" >
+				<ul>
 				<li><a href="#GroupChat">GroupChat</a></li>
 			</ul>
 			<div id='GroupChat'>
-				<ul id="messages"></ul>
+				<ul id="messages" ></ul>
 				<form id="form">
-					<input type="text" id="input"/>
-					<button>Send</button>
+					<div id="footer"><input type="text" id="input" style="width:75%;"/><button>Send</button>
+					</div>
 				</form>
-		</div>
-		</div>
+			</div>
+			</div>
+			<div id="rosterDiv"></div>
+		</section>
 	</body>
 </html>
