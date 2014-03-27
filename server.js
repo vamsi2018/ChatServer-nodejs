@@ -22,6 +22,8 @@ var express = require('express')
 	//var participatingSockets = [];
 	var participatingSockets = {};
 
+	//uniqueId -> ([chatters])
+	var idChattersMap ={};
 /*Mode 
  * */
 	var IS_DEV=true;
@@ -61,6 +63,16 @@ var express = require('express')
 
 			//var disconnectedSocketIndex = participatingSockets.indexOf(socket);
 			//participatingSockets.splice(disconnectedSocketIndex,1);
+			var anonymousChatIdArray = socket.anonymousChat;
+			var remoteSocket={};
+			for(var index=0;index<anonymousChatIdArray.length;index++){
+				remoteSocket = getAnonymousReceiverSocket(anonymousChatIdArray[index],socket);
+				remoteSocket.emit('anonymousMessage',"Your partner left the chat",anonymousChatIdArray[index],1);
+				var remoteSocketAnonymousChatIdindex = remoteSocket.anonymousChat.indexOf(anonymousChatIdArray[index]);
+				remoteSocket.anonymousChat.splice(index,1);
+
+				delete idChattersMap[anonymousChatIdArray[index]];
+			}
 			delete participatingSockets[socket.nickname];
 		});
 
@@ -71,7 +83,47 @@ var express = require('express')
 		
 		// Allow all the users to know about the online users
 		io.sockets.emit('requestedRoster',roster());
+
+		socket.on('private-chat-anonymous',function(){
+			var id = getRandomUniqueId();
+			var randomOnlineChatter = getRandomOnlineChatter(socket);
+			idChattersMap[id]=[];
+			idChattersMap[id].push(socket);
+			idChattersMap[id].push(randomOnlineChatter);
+			if(socket.anonymousChat == undefined){
+				socket.anonymousChat = [];
+			}
+			socket.anonymousChat.push(id);
+			if(randomOnlineChatter.anonymousChat == undefined){
+				randomOnlineChatter.anonymousChat = [];
+			}
+			randomOnlineChatter.anonymousChat.push(id);
+
+			socket.emit('anonymousMessage',"Start anonymous chatting by saying 'hi'",id,1);
+			randomOnlineChatter.emit('anonymousMessage',"Start anonymous chatting by saying 'hi'",id,1);
+
+		});
+
+		function getAnonymousReceiverSocket(randomId,theSocket){
+			var chattersArray = idChattersMap[randomId];
+			console.dir(idChattersMap);
+			console.log(randomId);
+			console.log(chattersArray);
+			for(var chatterIndex=0;chatterIndex<chattersArray.length;chatterIndex++){
+				var chatter = chattersArray[chatterIndex];
+				if(chatter != theSocket){
+					var receiverSocket = chatter;
+					break;
+				}
+			}
+			return receiverSocket;	
+		}
+		socket.on('anonymousMessage',function(msg,randomId){
+			var receiverSocket = getAnonymousReceiverSocket(randomId,socket);
+			receiverSocket.emit('anonymousMessage',msg,randomId,0);
+		});
 	});
+
 
 
 	function getSocket(nickName){
@@ -79,6 +131,26 @@ var express = require('express')
 		
 	}
 
+	function getRandomOnlineChatter(mySocket){
+		var randomSocket = mySocket;
+		var nickNamesArray = Object.keys(participatingSockets);
+		while(randomSocket.nickname == mySocket.nickname){
+			var nickNamesArrayLength = nickNamesArray.length;
+			var randomIndex = Math.floor((Math.random()*nickNamesArrayLength));
+			randomSocket = participatingSockets[nickNamesArray[randomIndex]];
+		}
+		return randomSocket;
+	}
+
+	function getRandomUniqueId(){
+		function S4() {
+			 return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+			  }
+		function guid() {
+			 return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+		}
+		return guid();
+	}
 
 	function isThisClientIpRegistered(newSocket){
 		for(name in participatingSockets){

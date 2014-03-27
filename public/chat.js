@@ -83,19 +83,49 @@ window.onload = function(){
 			rosterDiv.appendChild(connDiv);
 		}
 	});
+
+	socket.on('anonymousMessage',function(msg,id,type){
+		initiateAnonymousChat(id);
+		var toDiv = document.getElementById(id+"ChatDiv");
+		var toName= "";
+		if(type==1){
+			toName = "Admin";
+		}else{
+			toName = "Anonymous";
+		}
+		addPrivateMessage(toDiv.id,toName,msg);
+	});
 }
 
 function getRoster(){
 	socket.emit('getRoster',"");
 }
 
-
-function initiateChatWith(name){
-	var chatDiv = document.getElementById(name+'ChatDiv');
+function initiateAnonymousChat(id){
+	var chatDiv = document.getElementById(id+'ChatDiv');
 	if(chatDiv === null){
-	
+		chatDiv = createChatDiv(id);
+		chatDiv.getElementsByTagName("form")[0].onsubmit=function(){
+			formSubmitAnonymously(chatDiv.id);
+			return false;
+		};
+
+		var chat = document.getElementById('chat');
+		chat.appendChild(chatDiv);
+		$('#chat').tabs('add','#'+chatDiv.id,"Anonymous-Chat");
+		$('#chat').tabs('select','#'+chatDiv.id);
+		$('#'+chatDiv.id).focus();
+	}else{
+		// focus the already initiated chat div
+		$('#chat').tabs('select','#'+chatDiv.id);
+		$('#'+chatDiv.id).focus();
+	}
+
+}
+
+function createChatDiv(name){
 		//create the chat div here with input boxes and messages stuff
-		chatDiv = document.createElement('div');
+		var chatDiv = document.createElement('div');
 		chatDiv.id = name+'ChatDiv';
 		// Create the elements of this chat
 		var ul = document.createElement('ul');
@@ -116,11 +146,19 @@ function initiateChatWith(name){
 		footerDiv.appendChild(input);
 		footerDiv.appendChild(sendButton);
 		form.appendChild(footerDiv);
-		form.onsubmit = function(){
+		chatDiv.appendChild(form);
+		
+		return chatDiv;
+}
+function initiateChatWith(name){
+	var chatDiv = document.getElementById(name+'ChatDiv');
+	if(chatDiv === null){
+		chatDiv = createChatDiv(name);
+		chatDiv.getElementsByTagName("form")[0].onsubmit=function(){
 			formSubmit(chatDiv.id);
 			return false;
 		};
-		chatDiv.appendChild(form);
+
 		var chat = document.getElementById('chat');
 		chat.appendChild(chatDiv);
 		$('#chat').tabs('add','#'+chatDiv.id,name);
@@ -153,4 +191,22 @@ function formSubmit(divId){
 	input.value = '';
 	input.focus();
 	return false;
+}
+function formSubmitAnonymously(divId){
+	var div = document.getElementById(divId);
+	var input = document.getElementById(divId+'-input');	
+	addPrivateMessage(divId,'me',input.value);
+	socket.emit('anonymousMessage',input.value,div.getAttribute("data-to"));
+	
+	// reset the input
+	input.value = '';
+	input.focus();
+	return false;
+}
+
+function chatAnonymously(){
+
+	var messageBar = document.getElementById('messageBar');
+	socket.emit('private-chat-anonymous',{});
+
 }
