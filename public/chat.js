@@ -38,8 +38,6 @@ window.onload = function(){
 		var inputDiv = document.createElement('div');
 		inputDiv.className = 'message';
 		inputDiv.innerHTML = '<b>' + from + '</b> : ';
-		var len = text.length;
-		if()
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft";
 			//inputDiv.style.float='left';
