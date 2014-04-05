@@ -37,11 +37,21 @@ window.onload = function(){
 
 //Used for matching smiley
 var smiley = {};
-smiley[":\)"] = "&#x263A";
-smiley[":\("] = "&#x2639";
-smiley[":P"]="&#x1F60B";
-smiley[":D"]="&#x1F603";
-smiley[":\*"]="&#x1F603";
+smiley[" :\\)"] = "&#x1F60C";
+smiley[" :\\("] = "&#x2639";
+smiley[" :P"]="&#x1F60B";
+smiley[" :D"]="&#x1F603";
+smiley[" :\\*"]="&#x1F618";
+smiley[" o:\\)"]="&#x1F607";
+smiley[" >:-\\("]="&#x1F620";
+smiley[" :'\\("]="&#x1F613";
+smiley[" 3:\\)"]="&#x1F608";
+smiley[" 8\\)"]="&#x1F60E";
+smiley[" >:\\("]="&#x1F623";
+smiley[" :3"]="&#x1F616";
+smiley[" -_-"]="&#x1F610";
+smiley[" :o"]="&#x1F631";
+smiley[" ;\\)"]="&#x1F609";
 
 //end of smileys
 
@@ -50,7 +60,8 @@ smiley[":\*"]="&#x1F603";
 		var flag = 0; // check to add the div or not
 		inputDiv.className = 'message';
 		for(var pattern in smiley ){
-		text = text.replace('/'+pattern+'/g',smiley[pattern]);
+			var patt=new RegExp(pattern,'g');
+			text = text.replace(patt,smiley[pattern]);
 	}
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
