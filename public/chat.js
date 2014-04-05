@@ -39,12 +39,14 @@ window.onload = function(){
 		inputDiv.className = 'message';
 		inputDiv.innerHTML = '<b>' + from + '</b> : ';
 		if(from == "me"){
-			inputDiv.className= inputDiv.className+" floatLeft";
+			inputDiv.className= inputDiv.className+" floatLeft clouds";
+			inputDiv.id= 'clouds';
 			//inputDiv.style.float='left';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
+			inputDiv.id= 'clouds-others';
 			//inputDiv.style.float='right';
 			inputDiv.innerHTML =inputDiv.innerHTML+ text;
 		}
@@ -144,6 +146,7 @@ function createChatDiv(name){
 		footerDiv.id='footer';
 		var input = document.createElement('input');
 		input.id = chatDiv.id + '-input';
+		input.className = 'cloud';
 		input.type='text';
 		input.className = 'textInput';
 		var sendButton = document.createElement('button');
@@ -182,11 +185,13 @@ function addPrivateMessage(divId,from,text){
 	inputDiv.className = 'message';
 	if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft";
+			inputDiv.id = 'clouds';
 			//inputDiv.style.float='left';
 			inputDiv.innerHTML = '<b>' + from + '</b> : ' + text;
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
+			inputDiv.id = 'clouds-others';
 			//inputDiv.style.float='right';
 			inputDiv.innerHTML = '<b>' + from + '</b>:'+text;
 		}
@@ -200,6 +205,7 @@ function addPrivateMessage(divId,from,text){
 function formSubmit(divId){
 	var div = document.getElementById(divId);
 	var input = document.getElementById(divId+'-input');	
+	
 	addPrivateMessage(divId,'me',input.value);
 	socket.emit('private-chat',input.value,div.getAttribute('data-to'));
 	
@@ -211,6 +217,7 @@ function formSubmit(divId){
 function formSubmitAnonymously(divId){
 	var div = document.getElementById(divId);
 	var input = document.getElementById(divId+'-input');	
+	
 	addPrivateMessage(divId,'me',input.value);
 	socket.emit('anonymousMessage',input.value,div.getAttribute("data-to"));
 	
