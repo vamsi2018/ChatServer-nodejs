@@ -39,7 +39,7 @@ window.onload = function(){
 		inputDiv.className = 'message';
 		inputDiv.innerHTML = '<b>' + from + '</b> : ';
 		if(from == "me"){
-			inputDiv.className= inputDiv.className+" floatLeft clouds";
+			inputDiv.className= inputDiv.className+" floatLeft ";
 			inputDiv.id= 'clouds';
 			//inputDiv.style.float='left';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
