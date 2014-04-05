@@ -13,7 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="chat.css">
 		<script>
 			$(function() {
-				$( "#chat" ).tabs();
+				$( "#chat" ).tabs({ heightStyle: "fill", collapsible: true });
 			});
 		</script>
 	</head>
@@ -27,30 +27,33 @@
 		        <a href="#" class="brand">Kuckoo</a>
 		        <div class="nav-collapse collapse">
 		            <ul class="nav pull-right">
-			                <li class="active"><a href="#">Online Contacts</a></li>
-			                <li><a href="#">Chat Anonymously</a></li>
+			                <li class="active"><a href="#">Chat Anonymously</a></li>
 			                <li><a href="#">Contact Us</a></li>
 		            </ul>
             </div>
 				</div>
 			</div>
 		</div>
-		<div id='messageBar'></div>
-			<section>
-			<div id="chat" >
-				<ul>
-				<li><a href="#GroupChat">GroupChat</a></li>
-			</ul>
-			<div id='GroupChat'>
-				<div id="messages" ></div>
-				<form id="form">
-					<div id="footer"><input class="textInput" type="text" id="input" /><button>Send</button>
+		<div class="container starter-template">
+			<div class = 'row-fluid'>
+				<div id="chat" class="span10">
+					<ul>
+						<li><a href="#GroupChat">GroupChat</a></li>
+					</ul>
+					<div id='GroupChat'>
+						<div id="messages" ></div>
 					</div>
-				</form>
-			</div>
-			</div>
-			<input type='button' value='Chat Anonymously' onclick='chatAnonymously()'/>
-			<div id="rosterDiv"></div>
-		</section>
+					
+					<form id="form">
+						<div id="footer">
+							<input class="textInputi span10" type="text" id="input" />
+							<input type="submit" class="span2" value="Send"/>
+						</div>
+					</form>
+
+				</div>
+				<div id="rosterDiv" class="span2"></div>
+		</div>
+		</div>
 	</body>
 </html>
