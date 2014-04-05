@@ -36,13 +36,27 @@ window.onload = function(){
 
 	function addMessage(from,text){
 		var inputDiv = document.createElement('div');
+		var flag = 0; // check to add the div or not
 		inputDiv.className = 'message';
-		inputDiv.innerHTML = '<b>' + from + '</b> : ';
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
+			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
+			if(len >0){
+				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds' ){
+					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					inputDiv.id= 'clouds';
+					inputDiv.innerHTML = inputDiv.innerHTML+ text;
+				}
+				else{
+					flag = 1;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+				}
+			}
+		else{
 			inputDiv.id= 'clouds';
-			//inputDiv.style.float='left';
+			inputDiv.innerHTML = '<b>' + from + '</b> : ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
+			}	
 		}
 		else if(from == "Admin"){
 			inputDiv.className= inputDiv.className+" floatRight";
@@ -52,12 +66,28 @@ window.onload = function(){
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
+			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
+			if(len >0){
+				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
+					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					inputDiv.id= 'clouds-others';
+					inputDiv.innerHTML = inputDiv.innerHTML+ text;
+				}
+				else{
+					flag = 1;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+				}
+			}
+		else{
 			inputDiv.id= 'clouds-others';
-			//inputDiv.style.float='right';
-			inputDiv.innerHTML =inputDiv.innerHTML+ text;
+			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			inputDiv.innerHTML = inputDiv.innerHTML+ text;
+			}
 		}
 		var br = document.createElement('br');
-		document.getElementById('messages').appendChild(inputDiv);
+		if(flag != 1){
+			document.getElementById('messages').appendChild(inputDiv);
+		}
 		document.getElementById('messages').appendChild(br);
 		
 	}
@@ -188,12 +218,27 @@ function initiateChatWith(name){
 function addPrivateMessage(divId,from,text){
 
 	var inputDiv = document.createElement('div');
+	var flag =0;
 	inputDiv.className = 'message';
 	if(from == "me"){
-			inputDiv.className= inputDiv.className+" floatLeft";
-			inputDiv.id = 'clouds';
-			//inputDiv.style.float='left';
-			inputDiv.innerHTML = '<b>' + from + '</b> : ' + text;
+			inputDiv.className= inputDiv.className+" floatLeft ";
+			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
+			if(len >0){
+				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds' ){
+					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					inputDiv.id= 'clouds';
+					inputDiv.innerHTML = inputDiv.innerHTML+ text;
+				}
+				else{
+					flag = 1;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+				}
+			}
+		else{
+			inputDiv.id= 'clouds';
+			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			inputDiv.innerHTML = inputDiv.innerHTML+ text;
+			}	
 		}
 		else if(from == "Admin"){
 			inputDiv.className= inputDiv.className+" floatRight";
@@ -203,13 +248,29 @@ function addPrivateMessage(divId,from,text){
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
-			inputDiv.id = 'clouds-others';
-			//inputDiv.style.float='right';
-			inputDiv.innerHTML = '<b>' + from + '</b>:'+text;
+			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
+			if(len >0){
+				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
+					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					inputDiv.id= 'clouds-others';
+					inputDiv.innerHTML = inputDiv.innerHTML+ text;
+				}
+				else{
+					flag = 1;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+				}
+			}
+		else{
+			inputDiv.id= 'clouds-others';
+			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			inputDiv.innerHTML = inputDiv.innerHTML+ text;
+			}
 		}
-	document.getElementById(divId+'-messages').appendChild(inputDiv);
-	var br = document.createElement('br');
-	document.getElementById(divId+'-messages').appendChild(br);
+		if(flag != 1){
+			document.getElementById(divId+'-messages').appendChild(inputDiv);
+		}
+		var br = document.createElement('br');
+		document.getElementById(divId+'-messages').appendChild(br);
 
 }
 

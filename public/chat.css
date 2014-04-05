@@ -1,5 +1,7 @@
 #chat { 
-	  display:inline;
+	   padding-top:65px;
+	   padding-left:0px;
+	   display:inline;
 	   width: 80%;
 	   height: 95vh;
 	   float: left;
@@ -14,6 +16,7 @@
 	   height: 90vh;
 	   overflow:auto;
 	   position:relative;
+	   padding-top: 65px;
 	}	
 	
 	
@@ -41,7 +44,8 @@ section {
 }
 
 .textInput{
-	width:80%;
+	width:70%;
+	padding-bottom:20px;
 	height:20px
 }
 
@@ -54,6 +58,12 @@ section {
 	background: -moz-linear-gradient(top, #c9dbe9 0%, #fff 100%);
 	float:left;
 	text-align:left;
+}
+
+#send {
+	height: 20px;
+	padding-bottom:20px;
+	text-align:center;
 }
 
 
