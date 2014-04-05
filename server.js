@@ -102,8 +102,8 @@ var express = require('express')
 			}
 			randomOnlineChatter.anonymousChat.push(id);
 
-			socket.emit('anonymousMessage',"Start anonymous chatting by saying 'hi'",id,1);
-			randomOnlineChatter.emit('anonymousMessage',"Start anonymous chatting by saying 'hi'",id,1);
+			socket.emit('anonymousMessage',"Anonymos Chatting Area .. Admin is watching you!!!!",id,1);
+			randomOnlineChatter.emit('anonymousMessage',"Anonymos Chatting Area .. Admin is watching you!!!",id,1);
 
 		});
 

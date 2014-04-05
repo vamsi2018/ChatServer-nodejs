@@ -44,6 +44,12 @@ window.onload = function(){
 			//inputDiv.style.float='left';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 		}
+		else if(from == "Admin"){
+			inputDiv.className= inputDiv.className+" floatRight";
+			inputDiv.id = 'clouds-admin';
+			//inputDiv.style.float='right';
+			inputDiv.innerHTML = '<b>' + from + '</b>:'+text;
+		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
 			inputDiv.id= 'clouds-others';
@@ -189,6 +195,12 @@ function addPrivateMessage(divId,from,text){
 			//inputDiv.style.float='left';
 			inputDiv.innerHTML = '<b>' + from + '</b> : ' + text;
 		}
+		else if(from == "Admin"){
+			inputDiv.className= inputDiv.className+" floatRight";
+			inputDiv.id = 'clouds-admin';
+			//inputDiv.style.float='right';
+			inputDiv.innerHTML = '<b>' + from + '</b>:'+text;
+		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
 			inputDiv.id = 'clouds-others';
@@ -217,6 +229,7 @@ function formSubmit(divId){
 function formSubmitAnonymously(divId){
 	var div = document.getElementById(divId);
 	var input = document.getElementById(divId+'-input');	
+	input.class='clouds-admin';
 	
 	addPrivateMessage(divId,'me',input.value);
 	socket.emit('anonymousMessage',input.value,div.getAttribute("data-to"));
