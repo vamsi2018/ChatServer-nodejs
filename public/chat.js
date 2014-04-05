@@ -145,14 +145,14 @@ function createChatDiv(name){
 		var input = document.createElement('input');
 		input.id = chatDiv.id + '-input';
 		input.type='text';
-		input.class = 'textInput';
+		input.className = 'textInput';
 		var sendButton = document.createElement('button');
-		sendButton.innerText='Send';
+		sendButton.id='button';
+		sendButton.textContent='Send';
 		footerDiv.appendChild(input);
 		footerDiv.appendChild(sendButton);
 		form.appendChild(footerDiv);
 		chatDiv.appendChild(form);
-		
 		return chatDiv;
 }
 function initiateChatWith(name){
