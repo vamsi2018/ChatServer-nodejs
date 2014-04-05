@@ -7,11 +7,13 @@
 	}
 
 #rosterDiv { 
-	  display:block;
+	   display:block;
+	   bottom: -20px;
 	   width: 19%;
 	   float: right;
 	   height: 90vh;
 	   overflow:auto;
+	   position:relative;
 	}	
 	
 	
@@ -42,16 +44,6 @@ section {
 	width:80%;
 	height:20px
 }
-
-.contributor.contributor--large .contributor_avatar {
-    position: relative;
-    padding-left: 0.625em;
-    padding-right: 0.625em;
-    width: 18.75%;
-    float: left;
-    margin: 0px;
-}
-
 
 #clouds{
 	width: 100%;
