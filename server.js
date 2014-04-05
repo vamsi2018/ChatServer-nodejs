@@ -61,17 +61,20 @@ var express = require('express')
 			console.log(socket.nickname+" is disconnected");
 			socket.broadcast.emit('userDisconnect',socket.nickname);
 
-			//var disconnectedSocketIndex = participatingSockets.indexOf(socket);
-			//participatingSockets.splice(disconnectedSocketIndex,1);
 			var anonymousChatIdArray = socket.anonymousChat;
-			var remoteSocket={};
-			for(var index=0;index<anonymousChatIdArray.length;index++){
-				remoteSocket = getAnonymousReceiverSocket(anonymousChatIdArray[index],socket);
-				remoteSocket.emit('anonymousMessage',"Your partner left the chat",anonymousChatIdArray[index],1);
-				var remoteSocketAnonymousChatIdindex = remoteSocket.anonymousChat.indexOf(anonymousChatIdArray[index]);
-				remoteSocket.anonymousChat.splice(index,1);
 
-				delete idChattersMap[anonymousChatIdArray[index]];
+			// If anonymousChatIdArray is undefined, then it iplies that this 
+			// socket hasn't participatedin anonymous chat
+			if(anonymousChatIdArray != undefined){
+				var remoteSocket={};
+				for(var index=0;index<anonymousChatIdArray.length;index++){
+					remoteSocket = getAnonymousReceiverSocket(anonymousChatIdArray[index],socket);
+					remoteSocket.emit('anonymousMessage',"Your partner left the chat",anonymousChatIdArray[index],1);
+					var remoteSocketAnonymousChatIdindex = remoteSocket.anonymousChat.indexOf(anonymousChatIdArray[index]);
+					remoteSocket.anonymousChat.splice(index,1);
+
+					delete idChattersMap[anonymousChatIdArray[index]];
+				}
 			}
 			delete participatingSockets[socket.nickname];
 		});
@@ -109,18 +112,27 @@ var express = require('express')
 			console.dir(idChattersMap);
 			console.log(randomId);
 			console.log(chattersArray);
-			for(var chatterIndex=0;chatterIndex<chattersArray.length;chatterIndex++){
-				var chatter = chattersArray[chatterIndex];
-				if(chatter != theSocket){
-					var receiverSocket = chatter;
-					break;
+			// If chattersArray is undefined it means that the coresponding chat has been 
+			// disabled as one of the chatters has left the chat room
+			if(chattersArray != undefined){
+				for(var chatterIndex=0;chatterIndex<chattersArray.length;chatterIndex++){
+					var chatter = chattersArray[chatterIndex];
+					if(chatter != theSocket){
+						var receiverSocket = chatter;
+						break;
+					}
 				}
+				return receiverSocket;	
 			}
-			return receiverSocket;	
+			return null;
 		}
 		socket.on('anonymousMessage',function(msg,randomId){
 			var receiverSocket = getAnonymousReceiverSocket(randomId,socket);
-			receiverSocket.emit('anonymousMessage',msg,randomId,0);
+			if(receiverSocket != null){
+				receiverSocket.emit('anonymousMessage',msg,randomId,0);
+			}else{
+				socket.emit("anonymousMessage","Your partner left the chat room and your messages do not reach your partner",randomId,1);
+			}
 		});
 	});
 
