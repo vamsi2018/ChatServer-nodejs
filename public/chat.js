@@ -34,14 +34,28 @@ window.onload = function(){
 		})
 	});
 
+
+//Used for matching smiley
+var smiley = {};
+smiley[":\)"] = "&#x263A";
+smiley[":\("] = "&#x2639";
+smiley[":P"]="&#x1F60B";
+smiley[":D"]="&#x1F603";
+smiley[":\*"]="&#x1F603";
+
+//end of smileys
+
 	function addMessage(from,text){
 		var inputDiv = document.createElement('div');
 		var flag = 0; // check to add the div or not
 		inputDiv.className = 'message';
+		for(var pattern in smiley ){
+		text = text.replace('/'+pattern+'/g',smiley[pattern]);
+	}
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
-			if(len >0){
+			if(len >= 0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds';
@@ -141,6 +155,9 @@ window.onload = function(){
 	});
 }
 
+
+
+
 function getRoster(){
 	socket.emit('getRoster',"");
 }
@@ -220,13 +237,17 @@ function addPrivateMessage(divId,from,text){
 	var inputDiv = document.createElement('div');
 	var flag =0;
 	inputDiv.className = 'message';
+	for(var pattern in smiley ){
+		text = text.replace('/'+pattern+'/g',smiley[pattern]);
+	}
 	if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
-			if(len >0){
+			if(len >= 0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds';
+					
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
 				else{
