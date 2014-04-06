@@ -34,6 +34,11 @@ window.onload = function(){
 		socket.nickname = nickname.replace(/\ /g,'_');
 		socket.emit('join',socket.nickname);
 		document.getElementById('input').focus();
+		var li = document.createElement('li');
+		var nameDiv = document.createElement('a');
+		nameDiv.innerHTML="Hi , "+nickname;
+		li.appendChild(nameDiv);
+		document.getElementsByClassName('nav pull-right')[0].appendChild(li);	
 		// show the chat
 		document.getElementById('chat').style.display = 'block';
 
