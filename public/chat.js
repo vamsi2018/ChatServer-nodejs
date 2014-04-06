@@ -1,3 +1,22 @@
+//Used for matching smiley
+var smiley = {};
+smiley[" :\\)"] = "&#x1F60C";
+smiley[" :\\("] = "&#x2639";
+smiley[" :P"]="&#x1F60B";
+smiley[" :D"]="&#x1F603";
+smiley[" :\\*"]="&#x1F618";
+smiley[" o:\\)"]="&#x1F607";
+smiley[" >:-\\("]="&#x1F620";
+smiley[" :'\\("]="&#x1F613";
+smiley[" 3:\\)"]="&#x1F608";
+smiley[" 8\\)"]="&#x1F60E";
+smiley[" >:\\("]="&#x1F623";
+smiley[" :3"]="&#x1F616";
+smiley[" -_-"]="&#x1F610";
+smiley[" :o"]="&#x1F631";
+smiley[" ;\\)"]="&#x1F609";
+
+//end of smileys
 
 window.onload = function(){
 	socket = io.connect();
@@ -35,25 +54,6 @@ window.onload = function(){
 		})
 	});
 
-//Used for matching smiley
-var smiley = {};
-smiley[" :\\)"] = "&#x1F60C";
-smiley[" :\\("] = "&#x2639";
-smiley[" :P"]="&#x1F60B";
-smiley[" :D"]="&#x1F603";
-smiley[" :\\*"]="&#x1F618";
-smiley[" o:\\)"]="&#x1F607";
-smiley[" >:-\\("]="&#x1F620";
-smiley[" :'\\("]="&#x1F613";
-smiley[" 3:\\)"]="&#x1F608";
-smiley[" 8\\)"]="&#x1F60E";
-smiley[" >:\\("]="&#x1F623";
-smiley[" :3"]="&#x1F616";
-smiley[" -_-"]="&#x1F610";
-smiley[" :o"]="&#x1F631";
-smiley[" ;\\)"]="&#x1F609";
-
-//end of smileys
 
 
 	function addMessage(from,text){
@@ -62,7 +62,7 @@ smiley[" ;\\)"]="&#x1F609";
 		inputDiv.className = 'message';
 		for(var pattern in smiley ){
 			var patt=new RegExp(pattern,'g');
-			text = text.replace(patt,smiley[pattern]);
+			text = text.replace(patt,"<font size=4>"+smiley[pattern]+"</font>");
 	}
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
@@ -75,7 +75,7 @@ smiley[" ;\\)"]="&#x1F609";
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ text;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ text;
 				}
 			}
 		else{
@@ -249,7 +249,8 @@ function addPrivateMessage(divId,from,text){
 	var flag =0;
 	inputDiv.className = 'message';
 	for(var pattern in smiley ){
-		text = text.replace('/'+pattern+'/g',smiley[pattern]);
+		var patt=new RegExp(pattern,'g');
+		text = text.replace(patt,"<font size=6>"+smiley[pattern]+"</font>");
 	}
 	if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
@@ -262,7 +263,7 @@ function addPrivateMessage(divId,from,text){
 				}
 				else{
 					flag = 1;
-					document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML= document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML= document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML + '</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ text;
 				}
 			}
 		else{
