@@ -26,8 +26,12 @@ window.onload = function(){
 	socket.on('connect',function(){
 
 		// Send a join event with your name
-		var nickname =prompt('What is your nickname') ;
-		socket.nickname = nickname.replace(/\ /g,'-');
+		var nickname =prompt('What is your nickname');
+		while(nickname == null || nickname == ""){
+			var randNum=Math.floor(Math.random()*100);
+			nickname = "Guest"+randNum;
+		}
+		socket.nickname = nickname.replace(/\ /g,'_');
 		socket.emit('join',socket.nickname);
 		document.getElementById('input').focus();
 		// show the chat

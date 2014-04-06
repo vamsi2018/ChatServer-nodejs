@@ -33,7 +33,7 @@ var express = require('express')
 		socket.on('join',function(name){
 			socket.nickname=name;
 			if(!isThisClientIpRegistered(socket)||IS_DEV){
-				socket.broadcast.emit('announcement',name + 'joined the chat');
+				//socket.broadcast.emit('announcement',name + ' joined the chat');
 				socket.ip =socket.handshake.address.address ;
 				//participatingSockets.push(socket);
 				participatingSockets[socket.nickname]=socket;
@@ -59,7 +59,7 @@ var express = require('express')
 
 		socket.on('disconnect',function(){
 			console.log(socket.nickname+" is disconnected");
-			socket.broadcast.emit('userDisconnect',socket.nickname);
+			//socket.broadcast.emit('userDisconnect ',socket.nickname);
 
 			var anonymousChatIdArray = socket.anonymousChat;
 
