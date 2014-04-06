@@ -69,10 +69,11 @@ var express = require('express')
 				var remoteSocket={};
 				for(var index=0;index<anonymousChatIdArray.length;index++){
 					remoteSocket = getAnonymousReceiverSocket(anonymousChatIdArray[index],socket);
-					remoteSocket.emit('anonymousMessage',"Your partner left the chat",anonymousChatIdArray[index],1);
-					var remoteSocketAnonymousChatIdindex = remoteSocket.anonymousChat.indexOf(anonymousChatIdArray[index]);
-					remoteSocket.anonymousChat.splice(index,1);
-
+					if(remoteSocket != undefined){
+						remoteSocket.emit('anonymousMessage',"Your partner left the chat",anonymousChatIdArray[index],1);
+						var remoteSocketAnonymousChatIdindex = remoteSocket.anonymousChat.indexOf(anonymousChatIdArray[index]);
+						remoteSocket.anonymousChat.splice(index,1);
+					}
 					delete idChattersMap[anonymousChatIdArray[index]];
 				}
 			}
@@ -81,7 +82,9 @@ var express = require('express')
 
 		socket.on('private-chat',function(msg,to){
 		 var toSocket = getSocket(to);
-		 toSocket.emit('private-chat',socket.nickname,msg);
+		 if(toSocket!=undefined){
+			 toSocket.emit('private-chat',socket.nickname,msg);
+		 }
 		});
 		
 		// Allow all the users to know about the online users

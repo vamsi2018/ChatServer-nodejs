@@ -1,21 +1,24 @@
 //Used for matching smiley
 var smiley = {};
-smiley[" :\\)"] = "&#x1F60C";
-smiley[" :\\("] = "&#x2639";
-smiley[" :P"]="&#x1F60B";
-smiley[" :D"]="&#x1F603";
-smiley[" :\\*"]="&#x1F618";
-smiley[" o:\\)"]="&#x1F607";
-smiley[" >:-\\("]="&#x1F620";
-smiley[" :'\\("]="&#x1F613";
-smiley[" 3:\\)"]="&#x1F608";
-smiley[" 8\\)"]="&#x1F60E";
-smiley[" >:\\("]="&#x1F623";
-smiley[" :3"]="&#x1F616";
-smiley[" -_-"]="&#x1F610";
-smiley[" :o"]="&#x1F631";
-smiley[" ;\\)"]="&#x1F609";
-
+smiley["o:\\)"]="&#x1F607";
+smiley["O:\\)"]="&#x1F607";
+smiley[">:-\\("]="&#x1F620";
+smiley[">:\\("]="&#x1F623";
+smiley[":'\\("]="&#x1F613";
+smiley["3:\\)"]="&#x1F608";
+smiley[":\\)"] = "&#x1F60C";
+smiley[":\\("] = "&#x2639";
+smiley[":P"]="&#x1F60B";
+smiley[":p"]="&#x1F60B";
+smiley[":D"]="&#x1F603";
+smiley[":d"]="&#x1F603";
+smiley[":\\*"]="&#x1F618";
+smiley["8\\)"]="&#x1F60E";
+smiley[":3"]="&#x1F616";
+smiley["-_-"]="&#x1F610";
+smiley[":o"]="&#x1F631";
+smiley[":O"]="&#x1F631";
+smiley[";\\)"]="&#x1F609";
 //end of smileys
 
 window.onload = function(){
@@ -63,7 +66,7 @@ window.onload = function(){
 		for(var pattern in smiley ){
 			var patt=new RegExp(pattern,'g');
 			text = text.replace(patt,"<font size=4>"+smiley[pattern]+"</font>");
-	}
+		}
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
@@ -115,7 +118,9 @@ window.onload = function(){
 			document.getElementById('messages').appendChild(inputDiv);
 		}
 		document.getElementById('messages').appendChild(br);
-		
+	
+		// Scroll the page so that inputDiv is in view
+		//inputDiv.scrollIntoView();
 	}
 
 	var input = document.getElementById('input');
@@ -168,29 +173,21 @@ window.onload = function(){
 }
 
 
-//Used for matching smiley
-var smiley = {};
-smiley[" :\\)"] = "&#x1F60C";
-smiley[" :\\("] = "&#x2639";
-smiley[" :P"]="&#x1F60B";
-smiley[" :D"]="&#x1F603";
-smiley[" :\\*"]="&#x1F618";
-smiley[" o:\\)"]="&#x1F607";
-smiley[" >:-\\("]="&#x1F620";
-smiley[" :'\\("]="&#x1F613";
-smiley[" 3:\\)"]="&#x1F608";
-smiley[" 8\\)"]="&#x1F60E";
-smiley[" >:\\("]="&#x1F623";
-smiley[" :3"]="&#x1F616";
-smiley[" -_-"]="&#x1F610";
-smiley[" :o"]="&#x1F631";
-smiley[" ;\\)"]="&#x1F609";
-
-//end of smileys
 
 
 function getRoster(){
 	socket.emit('getRoster',"");
+}
+
+function createClosableTabsInDiv(parentDivId,chatDiv,label){
+	var id = chatDiv.id,
+			tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
+	var li = tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ,
+			tabContentHtml = chatDiv.outerHTML;
+	var tabs = $('#'+parentDivId).tabs();
+	tabs.find( ".ui-tabs-nav" ).append( li );
+	tabs.append(tabContentHtml);
+	tabs.tabs( "refresh" );
 }
 
 function initiateAnonymousChat(id){
@@ -205,9 +202,14 @@ function initiateAnonymousChat(id){
 		var chat = document.getElementById('chat');
 		chat.appendChild(chatDiv);
 		$('#chat').tabs('add','#'+chatDiv.id,"Anonymous-Chat");
+		var closeSpan = "<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>";
+		$('#chat').tabs().find(".ui-tabs-nav li:last").append(closeSpan);
+		//createClosableTabsInDiv('chat',chatDiv,"Anonymous-Chat");
 		$('#chat').tabs('select','#'+chatDiv.id);
 		$('#'+chatDiv.id).focus();
 	}else{
+		// Check if the div is hidden
+		document.querySelector('[href="#'+chatDiv.id+'"]').parentElement.style.display="block";
 		// focus the already initiated chat div
 		$('#chat').tabs('select','#'+chatDiv.id);
 		$('#'+chatDiv.id).focus();
@@ -219,10 +221,11 @@ function createChatDiv(name){
 		//create the chat div here with input boxes and messages stuff
 		var chatDiv = document.createElement('div');
 		chatDiv.id = name+'ChatDiv';
+		//chatDiv.class = "ui-tabs-panel ui-widget-content ui-corner-bottom";
 		// Create the elements of this chat
-		var ul = document.createElement('ul');
-		ul.id = chatDiv.id+'-messages';
-		chatDiv.appendChild(ul);
+		var messagesDiv = document.createElement('div');
+		messagesDiv.id = chatDiv.id+'-messages';
+		chatDiv.appendChild(messagesDiv);
 		chatDiv.setAttribute('data-to',name);
 		var form = document.createElement('form');
 		form.id = chatDiv.id + '-form';
@@ -254,9 +257,13 @@ function initiateChatWith(name){
 		var chat = document.getElementById('chat');
 		chat.appendChild(chatDiv);
 		$('#chat').tabs('add','#'+chatDiv.id,name);
+		var closeSpan = "<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>";
+		$('#chat').tabs().find(".ui-tabs-nav li:last").append(closeSpan);
 		$('#chat').tabs('select','#'+chatDiv.id);
 		$('#'+chatDiv.id).focus();
 	}else{
+		// Check if the div is hidden
+		document.querySelector('[href="#'+chatDiv.id+'"]').parentElement.style.display="block";
 		// focus the already initiated chat div
 		$('#chat').tabs('select','#'+chatDiv.id);
 		$('#'+chatDiv.id).focus();
@@ -269,7 +276,7 @@ function addPrivateMessage(divId,from,text){
 	inputDiv.className = 'message';
 	for(var pattern in smiley ){
 		var patt=new RegExp(pattern,'g');
-		text = text.replace(patt,"<font size=6>"+smiley[pattern]+"</font>");
+		text = text.replace(patt,"<font size=4>"+smiley[pattern]+"</font>");
 	}
 	if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
@@ -322,6 +329,7 @@ function addPrivateMessage(divId,from,text){
 		}
 		var br = document.createElement('br');
 		document.getElementById(divId+'-messages').appendChild(br);
+		//inputDiv.scrollIntoView();
 
 }
 

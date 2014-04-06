@@ -14,15 +14,12 @@
 		<script>
 			$(function() {
 				$( "#chat" ).tabs();
-				$(".ui-closable-tab").live( "click", function() {
-					var tabContainerDiv=$(this).closest(".ui-tabs").attr("id");
-					var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-					$( "#" + panelId ).remove();
-					$("#"+tabContainerDiv).tabs("refresh");
-					var tabCount=$("#"+tabContainerDiv).find(".ui-closable-tab").length;
-					if (tabCount<1) {
-						$("#"+tabContainerDiv).hide();
-					}
+				$(".ui-icon-close").live( "click", function() {
+					//var tabContainerDiv=$(this).closest(".ui-tabs").attr("id");
+					$( this ).closest( "li" ).css("display","none");
+					var fallBackDiv = $("#chat a")[0].getAttribute("href");
+					$('#chat').tabs('select',fallBackDiv);
+					$(fallBackDiv).focus();
 				});
 			});
 		</script>
