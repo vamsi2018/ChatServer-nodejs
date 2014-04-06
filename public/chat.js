@@ -1,3 +1,23 @@
+//Used for matching smiley
+var smiley = {};
+smiley[" :\\)"] = "&#x1F60C";
+smiley[" :\\("] = "&#x2639";
+smiley[" :P"]="&#x1F60B";
+smiley[" :D"]="&#x1F603";
+smiley[" :\\*"]="&#x1F618";
+smiley[" o:\\)"]="&#x1F607";
+smiley[" >:-\\("]="&#x1F620";
+smiley[" :'\\("]="&#x1F613";
+smiley[" 3:\\)"]="&#x1F608";
+smiley[" 8\\)"]="&#x1F60E";
+smiley[" >:\\("]="&#x1F623";
+smiley[" :3"]="&#x1F616";
+smiley[" -_-"]="&#x1F610";
+smiley[" :o"]="&#x1F631";
+smiley[" ;\\)"]="&#x1F609";
+
+//end of smileys
+
 window.onload = function(){
 	socket = io.connect();
 	socket.on('connect',function(){
@@ -42,7 +62,7 @@ window.onload = function(){
 		inputDiv.className = 'message';
 		for(var pattern in smiley ){
 			var patt=new RegExp(pattern,'g');
-			text = text.replace(patt,smiley[pattern]);
+			text = text.replace(patt,"<font size=4>"+smiley[pattern]+"</font>");
 	}
 		if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
@@ -55,7 +75,7 @@ window.onload = function(){
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ text;
 				}
 			}
 		else{
@@ -73,7 +93,7 @@ window.onload = function(){
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
-			if(len >0){
+			if(len >=0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds-others';
@@ -244,26 +264,25 @@ function initiateChatWith(name){
 }
 	
 function addPrivateMessage(divId,from,text){
-
 	var inputDiv = document.createElement('div');
 	var flag =0;
 	inputDiv.className = 'message';
 	for(var pattern in smiley ){
-		text = text.replace('/'+pattern+'/g',smiley[pattern]);
+		var patt=new RegExp(pattern,'g');
+		text = text.replace(patt,"<font size=6>"+smiley[pattern]+"</font>");
 	}
 	if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
-			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
+			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
 			if(len >= 0){
-				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds' ){
+				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds';
-					
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML= document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML + '</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ text;
 				}
 			}
 		else{
@@ -280,16 +299,16 @@ function addPrivateMessage(divId,from,text){
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
-			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
-			if(len >0){
-				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
+			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
+			if(len >=0){
+				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds-others';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML= document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
 				}
 			}
 		else{
