@@ -14,6 +14,16 @@
 		<script>
 			$(function() {
 				$( "#chat" ).tabs();
+				$(".ui-closable-tab").live( "click", function() {
+					var tabContainerDiv=$(this).closest(".ui-tabs").attr("id");
+					var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+					$( "#" + panelId ).remove();
+					$("#"+tabContainerDiv).tabs("refresh");
+					var tabCount=$("#"+tabContainerDiv).find(".ui-closable-tab").length;
+					if (tabCount<1) {
+						$("#"+tabContainerDiv).hide();
+					}
+				});
 			});
 		</script>
 	</head>
@@ -27,7 +37,7 @@
 		        <a href="#" class="brand"><img class="img-rounded img-polaroid img-circle" src='./Kuckoo.jpg' style='height:30px;width:30px;'/> Kuckoo</a>
 		           <div class="nav-collapse collapse">
 		            <ul class="nav pull-right">
-			                <li class="active"><a href="#">Chat Anonymously</a></li>
+			                <li><a href="#" onclick="chatAnonymously()">Chat Anonymously</a></li>
 			                <li><a href="#">Contact Us</a></li>
 		            </ul>
             		</div>

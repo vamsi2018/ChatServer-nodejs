@@ -31,29 +31,10 @@ window.onload = function(){
 
 		socket.on('alreadyRegistered',function(){
 			document.body.innerHTML = 'You are already connected with this IP';
-		})
+		});
 	});
 
 
-//Used for matching smiley
-var smiley = {};
-smiley[" :\\)"] = "&#x1F60C";
-smiley[" :\\("] = "&#x2639";
-smiley[" :P"]="&#x1F60B";
-smiley[" :D"]="&#x1F603";
-smiley[" :\\*"]="&#x1F618";
-smiley[" o:\\)"]="&#x1F607";
-smiley[" >:-\\("]="&#x1F620";
-smiley[" :'\\("]="&#x1F613";
-smiley[" 3:\\)"]="&#x1F608";
-smiley[" 8\\)"]="&#x1F60E";
-smiley[" >:\\("]="&#x1F623";
-smiley[" :3"]="&#x1F616";
-smiley[" -_-"]="&#x1F610";
-smiley[" :o"]="&#x1F631";
-smiley[" ;\\)"]="&#x1F609";
-
-//end of smileys
 
 	function addMessage(from,text){
 		var inputDiv = document.createElement('div');
@@ -167,6 +148,25 @@ smiley[" ;\\)"]="&#x1F609";
 }
 
 
+//Used for matching smiley
+var smiley = {};
+smiley[" :\\)"] = "&#x1F60C";
+smiley[" :\\("] = "&#x2639";
+smiley[" :P"]="&#x1F60B";
+smiley[" :D"]="&#x1F603";
+smiley[" :\\*"]="&#x1F618";
+smiley[" o:\\)"]="&#x1F607";
+smiley[" >:-\\("]="&#x1F620";
+smiley[" :'\\("]="&#x1F613";
+smiley[" 3:\\)"]="&#x1F608";
+smiley[" 8\\)"]="&#x1F60E";
+smiley[" >:\\("]="&#x1F623";
+smiley[" :3"]="&#x1F616";
+smiley[" -_-"]="&#x1F610";
+smiley[" :o"]="&#x1F631";
+smiley[" ;\\)"]="&#x1F609";
+
+//end of smileys
 
 
 function getRoster(){
