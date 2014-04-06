@@ -18,7 +18,7 @@ var express = require('express')
 	app.listen(3000);
 
 	var io = sio.listen(app);
-
+	//io.set('transports',['xhr-polling']);
 	//var participatingSockets = [];
 	var participatingSockets = {};
 
@@ -59,7 +59,7 @@ var express = require('express')
 
 		socket.on('disconnect',function(){
 			console.log(socket.nickname+" is disconnected");
-			//socket.broadcast.emit('userDisconnect ',socket.nickname);
+			socket.broadcast.emit('userDisconnect',socket.nickname);
 
 			var anonymousChatIdArray = socket.anonymousChat;
 

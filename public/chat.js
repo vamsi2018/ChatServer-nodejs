@@ -50,11 +50,8 @@ window.onload = function(){
 		});
 		
 		socket.on('userDisconnect',function(name){
-			var li = document.createElement('li');
-			li.className='userDisconnected';
-			li.innerHTML= name + ' disconnected!!!';
-			document.getElementById('messages').appendChild(li);
 			
+			console.log("recieved userDisconnect");
 			var rosterDiv = document.getElementById('rosterDiv');
 			var disconnectedUserDiv = document.getElementById(name+'Conn');
 			console.log("Removing "+name+"Conn");
