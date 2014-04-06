@@ -1,3 +1,4 @@
+
 window.onload = function(){
 	socket = io.connect();
 	socket.on('connect',function(){
@@ -34,7 +35,6 @@ window.onload = function(){
 		})
 	});
 
-
 //Used for matching smiley
 var smiley = {};
 smiley[" :\\)"] = "&#x1F60C";
@@ -55,6 +55,7 @@ smiley[" ;\\)"]="&#x1F609";
 
 //end of smileys
 
+
 	function addMessage(from,text){
 		var inputDiv = document.createElement('div');
 		var flag = 0; // check to add the div or not
@@ -74,7 +75,7 @@ smiley[" ;\\)"]="&#x1F609";
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ text;
 				}
 			}
 		else{
@@ -92,7 +93,7 @@ smiley[" ;\\)"]="&#x1F609";
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
-			if(len >0){
+			if(len >=0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds-others';
@@ -244,7 +245,6 @@ function initiateChatWith(name){
 }
 	
 function addPrivateMessage(divId,from,text){
-
 	var inputDiv = document.createElement('div');
 	var flag =0;
 	inputDiv.className = 'message';
@@ -253,17 +253,16 @@ function addPrivateMessage(divId,from,text){
 	}
 	if(from == "me"){
 			inputDiv.className= inputDiv.className+" floatLeft ";
-			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
+			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
 			if(len >= 0){
-				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds' ){
+				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds';
-					
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML= document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
 				}
 			}
 		else{
@@ -280,16 +279,16 @@ function addPrivateMessage(divId,from,text){
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
-			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
-			if(len >0){
-				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
+			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
+			if(len >=0){
+				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
 					inputDiv.id= 'clouds-others';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML= document.getElementById(divId+'-messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
 				}
 			}
 		else{
