@@ -1075,7 +1075,6 @@ label {
 
 select,
 textarea,
-input[type="text"],
 input[type="password"],
 input[type="datetime"],
 input[type="datetime-local"],
@@ -1103,7 +1102,6 @@ input[type="color"],
           border-radius: 4px;
 }
 
-input,
 textarea,
 .uneditable-input {
   width: 206px;
@@ -1114,7 +1112,6 @@ textarea {
 }
 
 textarea,
-input[type="text"],
 input[type="password"],
 input[type="datetime"],
 input[type="datetime-local"],
@@ -1330,7 +1327,7 @@ textarea[class*="span"],
   display: inline-block;
 }
 
-input,
+
 textarea,
 .uneditable-input {
   margin-left: 0;
