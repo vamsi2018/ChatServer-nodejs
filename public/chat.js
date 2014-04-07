@@ -20,6 +20,7 @@ smiley[":o"]="&#x1F631";
 smiley[":O"]="&#x1F631";
 smiley[";\\)"]="&#x1F609";
 //end of smileys
+var others_name;
 
 window.onload = function(){
 	socket = io.connect();
@@ -105,16 +106,25 @@ window.onload = function(){
 			if(len >=0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					others_name=from;
+					console.log("other name:"+others_name);
 					inputDiv.id= 'clouds-others';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
 				else{
 					flag = 1;
-					document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					if(others_name == from){
+						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br>'+ text;
+					}
+					else{
+						others_name=from;
+						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br><b> '+from+'</b> :'+ text;
+					}
 				}
 			}
 		else{
 			inputDiv.id= 'clouds-others';
+			others_name=from;
 			inputDiv.innerHTML = '<b>' + from + '</b> : ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
