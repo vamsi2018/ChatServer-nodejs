@@ -158,6 +158,8 @@ window.onload = function(){
 		var toDiv = document.getElementById(to+'ChatDiv');
 		addPrivateMessage(toDiv.id,to,msg);
 	});
+	
+	
 	socket.on('requestedRoster',function(activeConnectionNames){
 		var nicknameIndex = activeConnectionNames.indexOf(socket.nickname);
 		activeConnectionNames.splice(nicknameIndex,1);
@@ -221,14 +223,15 @@ function initiateAnonymousChat(id){
 		var closeSpan = "<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>";
 		$('#chat').tabs().find(".ui-tabs-nav li:last").append(closeSpan);
 		//createClosableTabsInDiv('chat',chatDiv,"Anonymous-Chat");
-		$('#chat').tabs('select','#'+chatDiv.id);
-		$('#'+chatDiv.id).focus();
+		//$('#chat').tabs('select','#'+chatDiv.id);
+		//$('#'+chatDiv.id).focus();
 	}else{
 		// Check if the div is hidden
 		document.querySelector('[href="#'+chatDiv.id+'"]').parentElement.style.display="block";
+		document.querySelector('[href="#'+chatDiv.id+'"]').style.backgroundColor="green";
 		// focus the already initiated chat div
-		$('#chat').tabs('select','#'+chatDiv.id);
-		$('#'+chatDiv.id).focus();
+		//$('#chat').tabs('select','#'+chatDiv.id);
+		//$('#'+chatDiv.id).focus();
 	}
 
 }
@@ -259,6 +262,7 @@ function createChatDiv(name){
 		footerDiv.appendChild(sendButton);
 		form.appendChild(footerDiv);
 		chatDiv.appendChild(form);
+		input.focus();
 		return chatDiv;
 }
 function initiateChatWith(name){
@@ -280,9 +284,10 @@ function initiateChatWith(name){
 	}else{
 		// Check if the div is hidden
 		document.querySelector('[href="#'+chatDiv.id+'"]').parentElement.style.display="block";
+		document.querySelector('[href="#'+chatDiv.id+'"]').style.backgroundColor="green";
 		// focus the already initiated chat div
-		$('#chat').tabs('select','#'+chatDiv.id);
-		$('#'+chatDiv.id).focus();
+		//$('#chat').tabs('select','#'+chatDiv.id);
+		//$('#'+chatDiv.id).focus();
 	}
 }
 	
@@ -372,7 +377,7 @@ function formSubmitAnonymously(divId){
 	
 	// reset the input
 	input.value = '';
-	input.focus();
+	 document.getElementById(divId+'-input').focus();
 	return false;
 }
 
