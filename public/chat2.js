@@ -34,7 +34,7 @@ window.onload = function(){
 		}
 		socket.nickname = nickname.replace(/\ /g,'_');
 		socket.emit('join',socket.nickname);
-		document.getElementById('GroupChatChatDiv-input').focus();
+		document.getElementById('GroupChat-input').focus();
 		var li = document.createElement('li');
 		var nameDiv = document.createElement('a');
 		nameDiv.innerHTML="Hi , "+nickname;
@@ -105,7 +105,8 @@ window.onload = function(){
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
 			if(len >=0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
-					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					var src = getImageSrc(from);
+					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 					others_name=from;
 					console.log("other name:"+others_name);
 					inputDiv.id= 'clouds-others';
@@ -118,14 +119,16 @@ window.onload = function(){
 					}
 					else{
 						others_name=from;
-						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br><b> '+from+'</b> :'+ text;
+						var src = getImageSrc(from);
+						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br> <img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b> '+from+'</b> : </br>'+ text;
 					}
 				}
 			}
 		else{
 			inputDiv.id= 'clouds-others';
 			others_name=from;
-			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			var src = getImageSrc(from);
+			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
 		}
@@ -139,7 +142,7 @@ window.onload = function(){
 		//inputDiv.scrollIntoView();
 	}
 
-	var input = document.getElementById('GroupChatChatDiv-input');
+	var input = document.getElementById('GroupChat-input');
 	document.getElementById('form').onsubmit = function(){
 		addMessage('me',input.value);
 		socket.emit('text',input.value);
@@ -151,21 +154,12 @@ window.onload = function(){
 		return false;
 	}
 
-	socket.on('text',function(from,text){
-		addMessage(from,text);
-		var chatLinkDiv = getChatLinkDiv("GroupChat");
-		if(chatLinkDiv.className === "notSelectedChatLink")
-			chatLinkDiv.className = "newMessageChatLink";
-
-	});
+	socket.on('text',addMessage);
 
 	socket.on('private-chat',function(to,msg){
 		initiateChatWith(to);
 		var toDiv = document.getElementById(to+'ChatDiv');
 		addPrivateMessage(toDiv.id,to,msg);
-		var chatLinkDiv = getChatLinkDiv(to);
-		if(chatLinkDiv.className === "notSelectedChatLink")
-			chatLinkDiv.className = "newMessageChatLink";
 	});
 	
 	
@@ -196,9 +190,6 @@ window.onload = function(){
 			toName = "Anonymous";
 		}
 		addPrivateMessage(toDiv.id,toName,msg);
-		var chatLinkDiv = getChatLinkDiv(id);
-		if(chatLinkDiv.className === "notSelectedChatLink")
-			chatLinkDiv.className = "newMessageChatLink";
 	});
 }
 
@@ -219,6 +210,10 @@ function createClosableTabsInDiv(parentDivId,chatDiv,label){
 	tabs.append(tabContentHtml);
 	tabs.tabs( "refresh" );
 }
+function getMessageLinkDivFromChatDivId(divId){
+	var id =divId.split("ChatDiv")[0];
+	return getChatLinkDiv(id);
+	}
 function focusThisDiv(id){
 	var currentDivInFocus = document.getElementsByClassName("visible")[0];
 	//currentDivInFocus.setAttribute('class','invisible');
@@ -228,25 +223,25 @@ function focusThisDiv(id){
 	divToBeFocussed.className = 'visible';
 	var inputInDivToBeFocussed = document.getElementById(id+'-input');
 	inputInDivToBeFocussed.focus();
+	//selectMessageLinkDiv(getMessageLinkDivFromChatDivId(id).id);
 
-}
-function showThisChat(name){
-	focusThisDiv(getChatDivForThisContact(name).id);
-	selectMessageLinkDiv(getChatLinkDiv(name).id);
 }
 function createMessageLinkDiv(id,label){
 	var messageLinkDiv = document.createElement("div");
 	messageLinkDiv.id = id+'LinkDiv';
 	messageLinkDiv.className = 'notSelectedChatLink';
 	var divLabel = document.createElement('div');
-	//var imag = document.createElement('img');
-	//imag.className = 'lass="img-rounded img-polaroid img-circle';
-	//imag.style='height:30px;width:30px;' 
-	//imag.src='./Kuckoo.jpg';
-	divLabel.textContent = label;
-	divLabel.setAttribute("onclick",'showThisChat("'+id+'")');
-	//divLabel.onclick = focusThisDiv(id+'ChatDiv');
-	//divLabel.appendChild(imag);
+	var span = document.createElement('span');
+	var imag = document.createElement('img');
+	imag.className = 'lass="img-rounded img-polaroid img-circle';
+	imag.style='height:30px;width:30px;';
+	span.textContent=' '+label;
+	var randNum=Math.floor(Math.random()*7);
+	imag.src='./mask'+randNum+'.jpg';
+	divLabel.setAttribute("onclick",'focusThisDiv("'+id+'ChatDiv")');
+	divLabel.onclick = focusThisDiv(id+'ChatDiv');
+	divLabel.appendChild(imag);
+	divLabel.appendChild(span);
 	messageLinkDiv.appendChild(divLabel);
 	document.getElementById("runningMessages").appendChild(messageLinkDiv);
 }
@@ -284,8 +279,8 @@ function initiateAnonymousChat(id){
 		var chat = document.getElementById('chat');
 		chat.appendChild(chatDiv);
 		createMessageLinkDiv(id,"Anonymous-Chat");
-		//selectMessageLinkDiv(id+'LinkDiv');
-		//focusThisDiv(chatDiv.id);
+		selectMessageLinkDiv(id+'LinkDiv');
+		focusThisDiv(chatDiv.id);
 		/*$('#chat').tabs('add','#'+chatDiv.id,"Anonymous-Chat");
 		var closeSpan = "<span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span>";
 		$('#chat').tabs().find(".ui-tabs-nav li:last").append(closeSpan);
@@ -298,8 +293,8 @@ function initiateAnonymousChat(id){
 		document.querySelector('[href="#'+chatDiv.id+'"]').style.backgroundColor="green";
 		*/
 		var chatLinkDiv = document.getElementById(id+'LinkDiv');
-		chatLinkDiv.style.display= 'block';
-		//chatLinkDiv.style.backgroundColor = 'green';
+		chatLinkDiv.style.display= 'blocl';
+		chatLinkDiv.style.backgroundColor = 'green';
 		// focus the already initiated chat div
 		//$('#chat').tabs('select','#'+chatDiv.id);
 		//$('#'+chatDiv.id).focus();
@@ -317,7 +312,6 @@ function createChatDiv(name){
 		messagesDiv.id = chatDiv.id+'-messages';
 		chatDiv.appendChild(messagesDiv);
 		chatDiv.setAttribute('data-to',name);
-		chatDiv.className = "invisible";
 		var form = document.createElement('form');
 		form.id = chatDiv.id + '-form';
 		var footerDiv = document.createElement('div');
@@ -334,7 +328,6 @@ function createChatDiv(name){
 		footerDiv.appendChild(sendButton);
 		form.appendChild(footerDiv);
 		chatDiv.appendChild(form);
-		
 		input.focus();
 		return chatDiv;
 }
@@ -384,7 +377,7 @@ function addPrivateMessage(divId,from,text){
 			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
 			if(len >= 0){
 				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds' ){
-					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					inputDiv.innerHTML = '<b>' + from + '</b> :';
 					inputDiv.id= 'clouds';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
@@ -410,7 +403,8 @@ function addPrivateMessage(divId,from,text){
 			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
 			if(len >=0){
 				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
-					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					var src = getImageSrc(from);
+					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 					inputDiv.id= 'clouds-others';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
@@ -421,7 +415,8 @@ function addPrivateMessage(divId,from,text){
 			}
 		else{
 			inputDiv.id= 'clouds-others';
-			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			var src = getImageSrc(from);
+			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
 		}
@@ -467,4 +462,11 @@ function chatAnonymously(){
 	socket.emit('private-chat-anonymous',{});
 
 }
+
+function getImageSrc(from){
+	var div = document.getElementById(from+'LinkDiv');
+	var img = div.getElementsByTagName('img');
+	return img[0].src;
+}
+
 
