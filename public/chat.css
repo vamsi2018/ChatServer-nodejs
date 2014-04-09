@@ -146,8 +146,10 @@ section {
 
 .selectedChatLink{
 	font-size:18px;
+	background: #c9dbe9;
 }
 
 .notSelectedChatLink{
 	font-size:18px;
+	background: #F5DEB3;
 }

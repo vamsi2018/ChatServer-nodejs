@@ -105,7 +105,8 @@ window.onload = function(){
 			var len=document.getElementById('messages').getElementsByClassName('message').length -1;
 			if(len >=0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
-					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					var src = getImageSrc(from);
+					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 					others_name=from;
 					console.log("other name:"+others_name);
 					inputDiv.id= 'clouds-others';
@@ -118,14 +119,16 @@ window.onload = function(){
 					}
 					else{
 						others_name=from;
-						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br><b> '+from+'</b> :'+ text;
+						var src = getImageSrc(from);
+						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br> <img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b> '+from+'</b> : </br>'+ text;
 					}
 				}
 			}
 		else{
 			inputDiv.id= 'clouds-others';
 			others_name=from;
-			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			var src = getImageSrc(from);
+			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
 		}
@@ -207,6 +210,10 @@ function createClosableTabsInDiv(parentDivId,chatDiv,label){
 	tabs.append(tabContentHtml);
 	tabs.tabs( "refresh" );
 }
+function getMessageLinkDivFromChatDivId(divId){
+	var id =divId.split("ChatDiv")[0];
+	return getChatLinkDiv(id);
+	}
 function focusThisDiv(id){
 	var currentDivInFocus = document.getElementsByClassName("visible")[0];
 	//currentDivInFocus.setAttribute('class','invisible');
@@ -216,6 +223,7 @@ function focusThisDiv(id){
 	divToBeFocussed.className = 'visible';
 	var inputInDivToBeFocussed = document.getElementById(id+'-input');
 	inputInDivToBeFocussed.focus();
+	//selectMessageLinkDiv(getMessageLinkDivFromChatDivId(id).id);
 
 }
 function createMessageLinkDiv(id,label){
@@ -223,14 +231,17 @@ function createMessageLinkDiv(id,label){
 	messageLinkDiv.id = id+'LinkDiv';
 	messageLinkDiv.className = 'notSelectedChatLink';
 	var divLabel = document.createElement('div');
-	//var imag = document.createElement('img');
-	//imag.className = 'lass="img-rounded img-polaroid img-circle';
-	//imag.style='height:30px;width:30px;' 
-	//imag.src='./Kuckoo.jpg';
-	divLabel.textContent = label;
+	var span = document.createElement('span');
+	var imag = document.createElement('img');
+	imag.className = 'lass="img-rounded img-polaroid img-circle';
+	imag.style='height:30px;width:30px;';
+	span.textContent=' '+label;
+	var randNum=Math.floor(Math.random()*7);
+	imag.src='./mask'+randNum+'.jpg';
 	divLabel.setAttribute("onclick",'focusThisDiv("'+id+'ChatDiv")');
-	//divLabel.onclick = focusThisDiv(id+'ChatDiv');
-	//divLabel.appendChild(imag);
+	divLabel.onclick = focusThisDiv(id+'ChatDiv');
+	divLabel.appendChild(imag);
+	divLabel.appendChild(span);
 	messageLinkDiv.appendChild(divLabel);
 	document.getElementById("runningMessages").appendChild(messageLinkDiv);
 }
@@ -366,7 +377,7 @@ function addPrivateMessage(divId,from,text){
 			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
 			if(len >= 0){
 				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds' ){
-					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					inputDiv.innerHTML = '<b>' + from + '</b> :';
 					inputDiv.id= 'clouds';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
@@ -392,7 +403,8 @@ function addPrivateMessage(divId,from,text){
 			var len=document.getElementById(divId+'-messages').getElementsByClassName('message').length -1;
 			if(len >=0){
 				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
-					inputDiv.innerHTML = '<b>' + from + '</b> : ';
+					var src = getImageSrc(from);
+					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 					inputDiv.id= 'clouds-others';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
@@ -403,7 +415,8 @@ function addPrivateMessage(divId,from,text){
 			}
 		else{
 			inputDiv.id= 'clouds-others';
-			inputDiv.innerHTML = '<b>' + from + '</b> : ';
+			var src = getImageSrc(from);
+			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
 		}
@@ -449,4 +462,11 @@ function chatAnonymously(){
 	socket.emit('private-chat-anonymous',{});
 
 }
+
+function getImageSrc(from){
+	var div = document.getElementById(from+'LinkDiv');
+	var img = div.getElementsByTagName('img');
+	return img[0].src;
+}
+
 
