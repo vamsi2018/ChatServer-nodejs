@@ -153,3 +153,8 @@ section {
 	font-size:18px;
 	background: #F5DEB3;
 }
+
+.newMessageChatLink{
+	font-size:18px;
+	background: orange;
+}
