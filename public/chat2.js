@@ -21,6 +21,7 @@ smiley[":O"]="&#x1F631";
 smiley[";\\)"]="&#x1F609";
 //end of smileys
 var others_name;
+var globalContactImageMap={};
 
 window.onload = function(){
 	socket = io.connect();
@@ -248,11 +249,12 @@ function createMessageLinkDiv(id,label){
 	var divLabel = document.createElement('div');
 	var span = document.createElement('span');
 	var imag = document.createElement('img');
-	imag.className = 'lass="img-rounded img-polaroid img-circle';
+	imag.className = 'img-rounded img-polaroid img-circle';
 	imag.style='height:30px;width:30px;';
 	span.textContent=' '+label;
-	var randNum=Math.floor(Math.random()*7);
-	imag.src='./mask'+randNum+'.jpg';
+	
+	//imag.src='./mask'+randNum+'.jpg';
+	imag.src=getImageSrc(label);
 	divLabel.appendChild(imag);
 	divLabel.appendChild(span);
 	divLabel.setAttribute("onclick",'showThisChat("'+id+'")');
@@ -478,9 +480,12 @@ function chatAnonymously(){
 }
 
 function getImageSrc(from){
-	var div = document.getElementById(from+'LinkDiv');
-	var img = div.getElementsByTagName('img');
-	return img[0].src;
+	if(globalContactImageMap[from]== undefined){
+		var randNum=Math.floor(Math.random()*7);
+		globalContactImageMap[from] = "./mask"+randNum+'.jpg';
+	}
+
+	return globalContactImageMap[from];
 }
 
 
