@@ -481,7 +481,7 @@ function chatAnonymously(){
 
 function getImageSrc(from){
 	if(globalContactImageMap[from]== undefined){
-		var randNum=Math.floor(Math.random()*7);
+		var randNum=Math.floor(Math.random()*15);
 		globalContactImageMap[from] = "./mask"+randNum+'.jpg';
 	}
 
