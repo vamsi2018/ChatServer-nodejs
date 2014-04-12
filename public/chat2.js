@@ -107,7 +107,7 @@ window.onload = function(){
 			if(len >=0){
 				if(document.getElementById('messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					var src = getImageSrc(from);
-					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
+					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> :&nbsp&nbsp&nbsp&nbsp&nbsp </br> ';
 					others_name=from;
 					console.log("other name:"+others_name);
 					inputDiv.id= 'clouds-others';
@@ -121,7 +121,7 @@ window.onload = function(){
 					else{
 						others_name=from;
 						var src = getImageSrc(from);
-						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br> <img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b> '+from+'</b> : </br>'+ text;
+						document.getElementById('messages').getElementsByClassName('message')[len].innerHTML= document.getElementById('messages').getElementsByClassName('message')[len].innerHTML + '</br> <img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b> '+from+'</b> :&nbsp&nbsp&nbsp&nbsp&nbsp </br>'+ text;
 					}
 				}
 			}
@@ -420,7 +420,7 @@ function addPrivateMessage(divId,from,text){
 			if(len >=0){
 				if(document.getElementById(divId+'-messages').getElementsByClassName('message')[len].id != 'clouds-others' ){
 					var src = getImageSrc(from);
-					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"    style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
+					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'" style="height:40px;width:40px;"/>  <b>' + from + '</b> :&nbsp&nbsp&nbsp&nbsp&nbsp</br> ';
 					inputDiv.id= 'clouds-others';
 					inputDiv.innerHTML = inputDiv.innerHTML+ text;
 				}
@@ -432,7 +432,7 @@ function addPrivateMessage(divId,from,text){
 		else{
 			inputDiv.id= 'clouds-others';
 			var src = getImageSrc(from);
-			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> : </br> ';
+			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> :&nbsp&nbsp&nbsp&nbsp&nbsp </br> ';
 			inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
 		}
