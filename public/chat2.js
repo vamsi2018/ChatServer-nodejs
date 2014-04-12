@@ -411,8 +411,9 @@ function addPrivateMessage(divId,from,text){
 		else if(from == "Admin"){
 			inputDiv.className= inputDiv.className+" floatRight";
 			inputDiv.id = 'clouds-admin';
+			inputDiv.className+=' anonymousefonts';
 			//inputDiv.style.float='right';
-			inputDiv.innerHTML = '<b>' + from + '</b>:'+text;
+			inputDiv.innerHTML = '<b>' + from + '</b> : '+text;
 		}
 		else{
 			inputDiv.className= inputDiv.className+" floatRight";
@@ -422,7 +423,13 @@ function addPrivateMessage(divId,from,text){
 					var src = getImageSrc(from);
 					inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'" style="height:40px;width:40px;"/>  <b>' + from + '</b> :&nbsp&nbsp&nbsp&nbsp&nbsp</br> ';
 					inputDiv.id= 'clouds-others';
-					inputDiv.innerHTML = inputDiv.innerHTML+ text;
+					if(from == 'Anonymous'){
+						inputDiv.className+=' anonymousefonts';
+						inputDiv.innerHTML = inputDiv.innerHTML+ text;
+					}
+					else{
+						inputDiv.innerHTML = inputDiv.innerHTML+ text;
+					}
 				}
 				else{
 					flag = 1;
@@ -433,7 +440,13 @@ function addPrivateMessage(divId,from,text){
 			inputDiv.id= 'clouds-others';
 			var src = getImageSrc(from);
 			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> :&nbsp&nbsp&nbsp&nbsp&nbsp </br> ';
-			inputDiv.innerHTML = inputDiv.innerHTML+ text;
+			if(from == 'Anonymous'){
+						inputDiv.className+=' anonymousefonts';
+						inputDiv.innerHTML = inputDiv.innerHTML+ '<font size="18">' +text+'</font>';
+			}
+			else{
+						inputDiv.innerHTML = inputDiv.innerHTML+ text;
+				}
 			}
 		}
 		if(flag != 1){
@@ -482,10 +495,9 @@ function chatAnonymously(){
 function getImageSrc(from){
 	if(globalContactImageMap[from]== undefined){
 		var randNum=Math.floor(Math.random()*15);
-		globalContactImageMap[from] = "./mask"+randNum+'.jpg';
+		globalContactImageMap[from] = "images/mask"+randNum+'.jpg';
 	}
 
 	return globalContactImageMap[from];
 }
-
 

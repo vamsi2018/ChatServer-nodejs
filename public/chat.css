@@ -158,3 +158,13 @@ section {
 	font-size:18px;
 	background: orange;
 }
+
+.anonymousefonts{
+font-family:'Sexy fonts';
+}
+
+@font-face {
+font-family:'Sexy fonts';
+src:url("fonts/nakedchick.ttf")
+format("truetype");
+} 
