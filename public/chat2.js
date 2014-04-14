@@ -138,7 +138,9 @@ window.onload = function(){
 			document.getElementById('messages').appendChild(inputDiv);
 		}
 		document.getElementById('messages').appendChild(br);
-	
+		var objDiv = document.getElementById("messages");
+		objDiv.scrollIntoView(objDiv.scroll);
+		//inputDiv.scrollTop = inputDiv.scrollHeight;
 		// Scroll the page so that inputDiv is in view
 		//inputDiv.scrollIntoView();
 	}
@@ -442,7 +444,7 @@ function addPrivateMessage(divId,from,text){
 			inputDiv.innerHTML = '<img class="img-rounded img-polaroid img-circle" src="'+src+'"  style="height:40px;width:40px;"/>  <b>' + from + '</b> :&nbsp&nbsp&nbsp&nbsp&nbsp </br> ';
 			if(from == 'Anonymous'){
 						inputDiv.className+=' anonymousefonts';
-						inputDiv.innerHTML = inputDiv.innerHTML+ '<font size="18">' +text+'</font>';
+						inputDiv.innerHTML = inputDiv.innerHTML+ text;
 			}
 			else{
 						inputDiv.innerHTML = inputDiv.innerHTML+ text;
@@ -454,7 +456,8 @@ function addPrivateMessage(divId,from,text){
 		}
 		var br = document.createElement('br');
 		document.getElementById(divId+'-messages').appendChild(br);
-		//inputDiv.scrollIntoView();
+		var objDiv = document.getElementById(divId+'-messages');
+		objDiv.scrollIntoView(objDiv.scroll);
 
 }
 
