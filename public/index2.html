@@ -10,6 +10,7 @@
 				    <script src='js/jquery-ui.js'></script>
 		<script src="/socket.io/socket.io.js" > </script>
 		<script src = "./chat2.js" > </script>
+		<script src = "./dialog.js" > </script>
 		<link rel="stylesheet" type="text/css" href="chat.css">
 	</head>
 	<body>
@@ -22,6 +23,7 @@
 		        <a href="#" class="brand"><img class="img-rounded img-polaroid img-circle" src='images/Kuckoo.jpg' style='height:30px;width:30px;'/> Kuku</a>
 		           <div class="nav-collapse collapse">
 		            <ul class="nav pull-right">
+			<li><a href="#" onclick="createGroupChatDialog()">Create GroupChat</a></li>
 			                <li><a href="#" onclick="chatAnonymously()">Chat Anonymously</a></li>
 			                <li><a href="#">Contact Us</a></li>
 		            </ul>
@@ -48,6 +50,8 @@
 					</div>
 				</div>
 				<div id="rosterDiv"></div>
+				<div id='CreateGroupDialog' title="Create Group Chat">
+				</div>
 	</body>
 </html>
 
