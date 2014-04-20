@@ -1,4 +1,4 @@
-$(function() {
+/*$(function() {
 	$( "#CreateGroupDialog" ).dialog({
 		autoOpen: true,
 		show: {
@@ -14,6 +14,7 @@ $(function() {
 		$( "#dialog" ).dialog( "open" );
 	});
 });
+*/
 
 function getNickNames(){
 	var rosterDiv = document.getElementById("rosterDiv");
@@ -37,13 +38,16 @@ function createNickNameDivForGroupChat(nickName){
 	inputCheckBox.name = 'selectedContactsForGroupChat';
 	inputCheckBox.value = nickName;
 	label.appendChild(inputCheckBox);
-	label.textContent = nickName;
+	var spanNickName = document.createElement('span');
+	spanNickName.textContent = nickName;
+	label.appendChild(spanNickName);
 	div.appendChild(label);
 	return div;
 }
 function createGroupChat(){
 	var createGroupDialog = document.getElementById('CreateGroupDialog');
 	createGroupDialog.style.display='none';	
+	$('#CreateGroupModal').modal('hide');
 }
 function createGroupChatDialog(){
 	var createGroupDialog = document.getElementById('CreateGroupDialog');
@@ -66,13 +70,13 @@ function createGroupChatDialog(){
 		contactsDiv.appendChild(nickNameDiv);
 	}
 
-	var createGroupChatButton = document.createElement('input');
-	createGroupChatButton.type = 'button';
-	createGroupChatButton.onclick = createGroupChat();
-	createGroupChatButton.value = 'Create Chat';
+	//var createGroupChatButton = document.createElement('input');
+	//createGroupChatButton.type = 'button';
+	//createGroupChatButton.setAttribute('onclick','createGroupChat()');
+	//createGroupChatButton.value = 'Create Chat';
 	createGroupDialog.appendChild(groupChatNameInput);
 	createGroupDialog.appendChild(contactsDiv);
-	createGroupDialog.appendChild(createGroupChatButton);
+	//createGroupDialog.appendChild(createGroupChatButton);
 
-	$( "#CreateGroupDialog" ).dialog( "open" );
+	//$( "#CreateGroupDialog" ).dialog( "open" );
 }

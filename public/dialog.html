@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>jQuery UI Dialog - Animation</title>
+		<link rel="stylesheet" href="css/jquery-ui.css">
+		<script src="js/jquery.js"></script>
+		<script src="js/jquery-ui.js"></script>
+		<script>
+			$(function() {
+				$( "#dialog" ).dialog({
+					autoOpen: false,
+					show: {
+						effect: "blind",
+						duration: 1000
+					},
+					hide: {
+						effect: "explode",
+						duration: 1000
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="dialog" title="Basic dialog">
+			<p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+		</div>
+		<button id="opener">Open Dialog</button>
+	</body>
+</html>
