@@ -22,6 +22,8 @@ var express = require('express')
 	//var participatingSockets = [];
 	var participatingSockets = {};
 
+	//chatRooms
+	var chatRooms = {};
 	//uniqueId -> ([chatters])
 	var idChattersMap ={};
 /*Mode 
@@ -136,6 +138,23 @@ var express = require('express')
 			}else{
 				socket.emit("anonymousMessage","Your partner left the chat room and your messages do not reach your partner",randomId,1);
 			}
+		});
+		socket.on('createGroupChat',function(chatName,selectedContacts,creatorNickName){
+			var id = getRandomUniqueId();
+			var creatorSocket = getSocket(creatorNickName);
+			chatRooms.id = {};
+			var thisChatRoom = chatRooms.id;
+			thisChatRoom.name = chatName;
+			thisChatRoom.participants = selectedContacts;
+			for(var participant in selectedContacts){
+				var participantSocket = getSocket(participant);
+				if(participantSocket.groupChatId == undefined)
+					participantSocket.groupChatId = [];
+				participantSocket.groupChatId.push(id);
+				participantSocket.join(id);
+			}
+			var msg = creatorNickName+' added you to '+chatName;
+			io.sockets.in(id).emit('createdGroupChat',id,chatName,selectedContacts,msg);
 		});
 	});
 

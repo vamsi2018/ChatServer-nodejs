@@ -47,6 +47,10 @@ function createNickNameDivForGroupChat(nickName){
 function createGroupChat(){
 	var createGroupDialog = document.getElementById('CreateGroupDialog');
 	createGroupDialog.style.display='none';	
+	var selectedContacts = $('#CreateGroupDialog input:checked').map(function(index,selectedCheckBox){return selectedCheckBox.value});
+	var groupChatName = $('#groupChatNameInput').val();
+	selectedContacts.push(nickname);
+	socket.emit('createGroupChat',groupChatName,selectedContacts,nickname);
 	$('#CreateGroupModal').modal('hide');
 }
 function createGroupChatDialog(){
@@ -60,6 +64,7 @@ function createGroupChatDialog(){
 	*/
 	var nickNamesArray = getNickNames();
 	var groupChatNameInput = document.createElement("input");
+	groupChatNameInput.id='groupChatNameInput';
 	groupChatNameInput.type = "text";
 	groupChatNameInput.placeholder = 'Enter group chat name';
 

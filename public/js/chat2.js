@@ -22,13 +22,13 @@ smiley[";\\)"]="&#x1F609";
 //end of smileys
 var others_name;
 var globalContactImageMap={};
-
+var nickname="";
 window.onload = function(){
 	socket = io.connect();
 	socket.on('connect',function(){
 
 		// Send a join event with your name
-		var nickname =prompt('What is your nickname');
+		nickname =prompt('What is your nickname');
 		while(nickname == null || nickname == ""){
 			var randNum=Math.floor(Math.random()*100);
 			nickname = "Guest"+randNum;
@@ -203,6 +203,10 @@ window.onload = function(){
 		var chatLinkDiv = getChatLinkDiv(id);
 		if(chatLinkDiv.className === "notSelectedChatLink")
 			chatLinkDiv.className = "newMessageChatLink";
+	});
+
+	socket.on('createdGroupChat',function(chatId,chatName,participants,msg){
+	//create  chat div and assign proper form submit	
 	});
 }
 
