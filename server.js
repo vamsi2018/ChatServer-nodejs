@@ -3,16 +3,16 @@
  * */
 
 var express = require('express')
-		,sio = require('socket.io');
+		,sio = require('socket.io')
+		,http = require('http');
 
 /*
  *Create App
  * */
-	app = express.createServer(
-				express.bodyParser(),
-				express.static('public')
-			);
+ 	server = express();
+ 	server.use(express.static('public'));
 
+ 	app = http.createServer(server);
 /*Listen
  * */
 	app.listen(3000);
@@ -29,7 +29,7 @@ var express = require('express')
 	var IS_DEV=true;
 
 	io.sockets.on('connection',function(socket){
-		console.log("Client connecting to server from " + socket.handshake.address.address);
+		console.log("Client connecting to server from " + socket.handshake.address);
 		socket.on('join',function(name){
 			socket.nickname=name;
 			if(!isThisClientIpRegistered(socket)||IS_DEV){
